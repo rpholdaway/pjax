@@ -258,6 +258,10 @@ Pjax.prototype = {
       // First parse url and check for hash to override scroll
       var a = document.createElement("a");
       a.href = this.state.href;
+      var offset =
+        typeof state.options.scrollToOffset === "function"
+          ? state.options.scrollToOffset()
+          : state.options.scrollToOffset;
       if (a.hash) {
         var name = a.hash.slice(1);
         name = decodeURIComponent(name);
@@ -275,17 +279,23 @@ Pjax.prototype = {
             } while (target);
           }
         }
-        window.scrollTo(0, curtop);
+        window.scrollTo(0, curtop - offset);
       } else if (state.options.scrollTo !== false) {
         // Scroll page to top on new page load
         if (state.options.scrollTo.length > 1) {
-          window.scrollTo(state.options.scrollTo[0], state.options.scrollTo[1]);
+          window.scrollTo(
+            state.options.scrollTo[0],
+            state.options.scrollTo[1] - offset
+          );
         } else {
-          window.scrollTo(0, state.options.scrollTo);
+          window.scrollTo(0, state.options.scrollTo - offset);
         }
       }
     } else if (state.options.scrollRestoration && state.options.scrollPos) {
-      window.scrollTo(state.options.scrollPos[0], state.options.scrollPos[1]);
+      window.scrollTo(
+        state.options.scrollPos[0],
+        state.options.scrollPos[1] - offset
+      );
     }
 
     this.state = {

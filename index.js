@@ -264,6 +264,9 @@ Pjax.prototype = {
           : state.options.scrollToOffset;
       if (a.hash) {
         var name = a.hash.slice(1);
+        if (state.options.cacheBust) {
+          name = name.split("?")[0];
+        }
         name = decodeURIComponent(name);
 
         var curtop = 0;
